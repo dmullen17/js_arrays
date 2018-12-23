@@ -32,6 +32,10 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
     let inventors1500s = inventors.filter(el => el['year'] >= 1500 && el['year'] < 1600);
+    // I should use . notation more - looks cleaner 
+    let inventors1600s = inventors.filter(el => el.year >= 1600 && el.year < 1700);
+    // console.table() outputs the field in an easy to read table
+    console.table(inventors1600s);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
@@ -48,19 +52,53 @@
     // 5. Sort the inventors by years lived
     const calculateAge = function(obj) {return obj['passed'] - obj['year']};
     let inventorsSortedByAge = inventors.sort((a, b) => calculateAge(a) - calculateAge(b));
+    // Don't forget we can create variables in these functions
+    let oldest = inventors.sort(function(a, b) {
+        let firstGuy = a.passed - a.year;
+        let nextGuy = b.passed - b.year; 
+        return firstGuy - nextGuy;
+    })
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    // Run this on wikipedia page
+    const category = document.querySelector('.mw-category');
+    const links = Array.from(category.querySelectorAll('a')); // you can call querySelector on any DOM object
+    // You can't map over a NodeList object so we turn it into an array using Array.from()
+    const de = links
+                    .map(link => link.textContent)
+                    .filter(streetName => streetName.includes('de'));
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
     let inventorsSortedByLastName = inventors.sort((a, b) => a['last'] < b['last'] ? -1 : 1);
+    const peopleSorted = people.sort(function(a, b) {
+        let lastName1 = a.split(', ')[0];
+        let lastName2 = b.split(', ')[0];
+        return lastName1 < lastName2 ? -1 : 1;
+    })
+    // Another solution using destructuring looks more elegant: 
+    const peopleSorted2 = people.sort(function(lastOne, nextOne) {
+        const [aFirst, aLast] = lastOne.split(', ');
+        const [bFirst, bLast] = nextOne.split(', ');
+        return aLast > bLast ? 1 : -1;
+    })
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
     let numCars6 = data.reduce((total, currentValue) => total + (currentValue === 'car' ? 1 : 0), initialValue = 0);
+      
+    // Wes Solution 
+    // Here we set the intial value to an empty object, initialize an obj[item] to 0 if it DNE to dynmically populate the object, then increment the count.
+    let counts = data.reduce(function(obj, item) {
+        if (!obj[item]) {
+            obj[item] = 0;
+        }
+        obj[item] ++;
+        return obj;
+    }, {})
 
   </script>
 </body>
