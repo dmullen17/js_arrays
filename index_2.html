@@ -27,9 +27,15 @@
     // Some and Every Checks
     // Array.prototype.some() // is at least one person 19 or older?
     let date = new Date();
-    people.some(el => date.getFullYear() - el.year > 19);
+    people.some(el => date.getFullYear() - el.year >= 19);
+    // Wes Bos Solution 
+    const isAdult = people.some(person => {
+        const currentYear = (new Date()).getFullYear();
+        return currentYear - person.year >= 19;
+    })
+    console.log({isAdult}) // prints out the entire object if your wrap it in braces
     // Array.prototype.every() // is everyone 19 or older?
-    people.every(el => date.getFullYear() - el.year > 19);
+    people.every(el => date.getFullYear() - el.year >= 19);
 
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
@@ -40,6 +46,14 @@
     // Find the comment with this ID
     comments.findIndex(el => el.id === 823423);
     // delete the comment with the ID of 823423
+    comments.splice(comments.findIndex(el => el.id === 823423), 1);
+      
+    // redux solution of deleting an item from an array
+    const index = comments.findIndex(el => el.id === 823423);
+    const newComments = [
+        ...comments.slice(0, index),
+        ...comments.slice(index + 1)
+    ];
 
   </script>
 </body>
